@@ -10,7 +10,7 @@ steps:
     publishWebProjects: true
 - task: AzureWebApp@1
   inputs:
-    azureSubscription: '<Azure for Students>'
+    azureSubscription: 'vinayak'
     appType: 'webAppLinux'
     appName: 'project-cicd'
     package: '$(System.DefaultWorkingDirectory)/**/*.zip'
