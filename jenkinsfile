@@ -1,6 +1,6 @@
 pipeline {
     agent any
-    
+
     stages {
         stage("Clone Code") {
             steps {
@@ -8,29 +8,29 @@ pipeline {
                 git branch: "main", url: "https://github.com/Vinayak-009/portfolio-new.git"
             }
         }
-        
+
         stage("Build and Test") {
             steps {
                 echo "Building the image"
                 script {
-                    sh "docker build -t portfolio-new ."
+                    sh "docker build -t portfolio-new:latest ."
                 }
             }
         }
-        
+
         stage("Push to Docker Hub") {
             steps {
                 echo "Pushing to Docker Hub"
                 script {
-                    withCredentials([usernamePassword(credentialsId:"dockerHub",passwordVariable:"dockerHubPass",usernameVariable:"dockerHubUser")]){
-                        sh "docker tag portfolio-new ${env.dockerUser}/portfolio-new:latest"
+                    withCredentials([usernamePassword(credentialsId: "dockerHub", passwordVariable: "dockerHubPass", usernameVariable: "dockerHubUser")]) {
+                        sh "docker tag portfolio-new:latest ${env.dockerHubUser}/portfolio-new:latest"
                         sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPass}"
                         sh "docker push ${env.dockerHubUser}/portfolio-new:latest"
                     }
                 }
             }
         }
-        
+
         stage("Deploy") {
             steps {
                 echo "Deploying"
